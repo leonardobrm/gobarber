@@ -1,9 +1,11 @@
 import expess from 'express';
+import routes from './routes';
 
-const server = expess();
+const app = expess();
 
-server.get('/', (req, res) => res.json({ message: 'hello word' }));
+app.use(expess.json());
+app.use(routes);
 
-server.listen(3333, () => {
+app.listen(3333, () => {
   console.log('🚀🚀 Server Started 🚀🚀');
 });
