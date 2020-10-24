@@ -8,6 +8,11 @@ const appointmentsRepository = new AppointmentRepository();
 
 const appointmentsRouter = Router();
 
+appointmentsRouter.get('/', (req, res) => {
+  const appointments = appointmentsRepository.all();
+  return res.json(appointments);
+});
+
 appointmentsRouter.post('/', (req, res) => {
   const { provider, date } = req.body;
 
