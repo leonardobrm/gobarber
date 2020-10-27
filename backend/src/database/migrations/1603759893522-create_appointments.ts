@@ -1,4 +1,3 @@
-import { query } from 'express';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export default class createAppointments1603759893522
