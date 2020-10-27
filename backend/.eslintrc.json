@@ -20,6 +20,7 @@
     ],
     "rules": {
       "prettier/prettier": "error",
+      "class-methods-use-this": "off",
       "camelcase": "off",
       "import/no-extraneous-dependencies": "off",
        "import/extensions": [
