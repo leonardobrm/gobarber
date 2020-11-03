@@ -11,6 +11,9 @@ userRouter.post('/', async (req, res) => {
 
     const user = await createUser.execute({ name, email, password });
 
+    // do not return the password
+    user.password = 'secret';
+
     return res.json(user);
   } catch (err) {
     return res.status(400).json({ error: err.message });
