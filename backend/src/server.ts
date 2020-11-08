@@ -1,13 +1,15 @@
 import 'reflect-metadata';
 
-import expess from 'express';
+import express from 'express';
 import routes from './routes';
+import upload from './config/upload';
 
 import './database';
 
-const app = expess();
+const app = express();
 
-app.use(expess.json());
+app.use(express.json());
+app.use('/files', express.static(upload.directory));
 app.use(routes);
 
 app.listen(3333, () => {
