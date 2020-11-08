@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 
 import auth from '../config/auth';
+import AppError from '../error/AppError';
 
 interface TokenPayload {
   iat: number;
@@ -16,21 +17,17 @@ export default function ensureAuthenticate(
 ): void {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader) throw Error('JTW token is missing');
+  if (!authHeader) throw new AppError('JTW token is missing', 401);
 
   const [, token] = authHeader.split(' ');
 
-  try {
-    const decoded = verify(token, auth.jwt.secret);
+  const decoded = verify(token, auth.jwt.secret);
 
-    const { sub } = decoded as TokenPayload;
+  const { sub } = decoded as TokenPayload;
 
-    req.user = {
-      id: sub,
-    };
+  req.user = {
+    id: sub,
+  };
 
-    next();
-  } catch {
-    throw Error('Invalid JTW Token');
-  }
+  next();
 }
