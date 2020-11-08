@@ -21,7 +21,8 @@ export default function ensureAuthenticate(
 
   const [, token] = authHeader.split(' ');
 
-  const decoded = verify(token, auth.jwt.secret);
+  try {
+    const decoded = verify(token, auth.jwt.secret);
 
   const { sub } = decoded as TokenPayload;
 
@@ -30,4 +31,9 @@ export default function ensureAuthenticate(
   };
 
   next();
+  } catch (err) {
+    throw new AppError('Invalid JWT token', 401)
+  }
+
+  
 }
