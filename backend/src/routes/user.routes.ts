@@ -10,17 +10,13 @@ import ensureAuthenticate from '../middleware/ensureAuthenticate';
 const userRouter = Router();
 const upload = multer(uploadConfig);
 userRouter.post('/', async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
+  const { name, email, password } = req.body;
 
-    const createUser = new CreateUserService();
+  const createUser = new CreateUserService();
 
-    const user = await createUser.execute({ name, email, password });
+  const user = await createUser.execute({ name, email, password });
 
-    return res.json(user);
-  } catch (err) {
-    return res.status(400).json({ error: err.message });
-  }
+  return res.json(user);
 });
 
 userRouter.patch(
@@ -28,21 +24,17 @@ userRouter.patch(
   ensureAuthenticate,
   upload.single('avatar'),
   async (req, res) => {
-    try {
-      const { filename } = req.file;
-      const { id } = req.user;
+    const { filename } = req.file;
+    const { id } = req.user;
 
-      const updateUserAvatar = new UpdateUserAvatarService();
+    const updateUserAvatar = new UpdateUserAvatarService();
 
-      const user = await updateUserAvatar.execute({
-        user_id: id,
-        avatarFilename: filename,
-      });
+    const user = await updateUserAvatar.execute({
+      user_id: id,
+      avatarFilename: filename,
+    });
 
-      return res.json(user);
-    } catch (err) {
-      return res.status(400).json({ error: err.message });
-    }
+    return res.json(user);
   },
 );
 
