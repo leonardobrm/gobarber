@@ -7,10 +7,11 @@ import logo from '../../assets/logo.svg';
 
 import Button from '../../components/Button';
 import Input from '../../components/Input';
+import validationSubmit from '../../utils/validationSubmit';
 
 const Signup: React.FC = () => {
-  const handleSubimit = useCallback(data => {
-    console.log(data);
+  const handleSubimit = useCallback(async data => {
+    await validationSubmit(data);
   }, []);
 
   return (
