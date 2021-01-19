@@ -8,17 +8,17 @@ import logo from '../../assets/logo.svg';
 
 import Button from '../../components/Button';
 import Input from '../../components/Input';
-import validationSubmit from '../../utils/validationSubmit';
+import ValidationSubimit from '../../utils/validationSubmit';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 const Signup: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const handleSubimit = useCallback(async data => {
+    const validationSubmit = new ValidationSubimit(data);
     try {
       formRef.current?.setErrors({});
-      await validationSubmit(data);
-      formRef.current?.clearField(data);
+      await validationSubmit.SignUp();
     } catch (err) {
       const error = getValidationErrors(err);
       formRef.current?.setErrors(error);
