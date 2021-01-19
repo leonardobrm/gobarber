@@ -1,17 +1,28 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { FiArrowLeft, FiMail, FiUser, FiLock } from 'react-icons/fi';
 
 import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
 import { Container, Content, Background } from './styles';
 import logo from '../../assets/logo.svg';
 
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import validationSubmit from '../../utils/validationSubmit';
+import getValidationErrors from '../../utils/getValidationErrors';
 
 const Signup: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
+
   const handleSubimit = useCallback(async data => {
-    await validationSubmit(data);
+    try {
+      formRef.current?.setErrors({});
+      await validationSubmit(data);
+      formRef.current?.clearField(data);
+    } catch (err) {
+      const error = getValidationErrors(err);
+      formRef.current?.setErrors(error);
+    }
   }, []);
 
   return (
@@ -20,7 +31,7 @@ const Signup: React.FC = () => {
         <Background />
         <Content>
           <img src={logo} alt="GoBarber" />
-          <Form onSubmit={handleSubimit}>
+          <Form ref={formRef} onSubmit={handleSubimit}>
             <Input name="name" icon={FiUser} placeholder="Nome" />
             <Input name="email" icon={FiMail} placeholder="E-mail" />
             <Input

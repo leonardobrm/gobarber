@@ -1,19 +1,14 @@
 import * as Yup from 'yup';
 
-const validationSubmit = async (data: object): Promise<void> => {
+export default async function validationSubmit(data: object): Promise<void> {
   const schema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    email: Yup.string().required('E-mail is required').email('Enter an email'),
-    password: Yup.string().min(6, '6 digits minimun'),
+    name: Yup.string().required('Nome obrigatorio'),
+    email: Yup.string()
+      .required('E-mail obrigatorio')
+      .email('Digite um E-mail'),
+    password: Yup.string().min(6, 'Minimo 6 digitos'),
   });
-
-  await schema
-    .validate(data, {
-      abortEarly: false,
-    })
-    .catch(err => {
-      console.log(err);
-    });
-};
-
-export default validationSubmit;
+  await schema.validate(data, {
+    abortEarly: false,
+  });
+}
