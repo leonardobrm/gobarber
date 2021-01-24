@@ -1,10 +1,13 @@
 import React, { useCallback, useRef } from 'react';
+import * as Yup from 'yup';
 import { Form } from '@unform/web';
 
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import ValidationSubimit from '../../utils/validationSubmit';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/auth';
+import { useToast } from '../../context/toast';
+import { usePasswordVisible } from '../../context/passwordVisible';
 
 import { Container, Content, Background } from './styles';
 import logo from '../../assets/logo.svg';
@@ -17,6 +20,8 @@ const Signin: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const { signIng } = useAuth();
+  const { addToast } = useToast();
+  const { type } = usePasswordVisible();
 
   const handleSubimit = useCallback(
     async data => {
@@ -29,12 +34,20 @@ const Signin: React.FC = () => {
 
         await signIng({ email, password });
       } catch (err) {
-        const error = getValidationErrors(err);
+        if (err instanceof Yup.ValidationError) {
+          const error = getValidationErrors(err);
 
-        formRef.current?.setErrors(error);
+          formRef.current?.setErrors(error);
+        }
+
+        addToast({
+          title: 'Erro na autenticação',
+          description: 'ocorreu um erro ao fazer login, cheque as credenciais',
+          type: 'error',
+        });
       }
     },
-    [signIng],
+    [signIng, addToast],
   );
 
   return (
@@ -48,7 +61,8 @@ const Signin: React.FC = () => {
             <Input
               name="password"
               icon={FiLock}
-              type="password"
+              type={type}
+              ispassword
               placeholder="Senha"
             />
             <Button type="submit">Entrar</Button>
