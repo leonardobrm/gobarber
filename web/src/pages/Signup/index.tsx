@@ -38,6 +38,7 @@ const Signup: React.FC = () => {
               name="password"
               icon={FiLock}
               type="password"
+              ispassword
               placeholder="Senha"
             />
             <Button type="submit">Cadastro</Button>

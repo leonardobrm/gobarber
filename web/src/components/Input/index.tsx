@@ -12,12 +12,20 @@ import { useField } from '@unform/core';
 
 import { Container, Error } from './style';
 
+import PasswordVisible from './components/passwordVisible/PasswordVisible';
+
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   icon?: React.ComponentType<IconBaseProps>;
+  ispassword?: boolean;
 }
 
-const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
+const Input: React.FC<InputProps> = ({
+  name,
+  icon: Icon,
+  ispassword,
+  ...rest
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -51,6 +59,7 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
         ref={inputRef}
         {...rest}
       />
+      {!error && ispassword && <PasswordVisible />}
       {error && (
         <Error title={error}>
           <FiAlertCircle color="#c53030" size={20} />

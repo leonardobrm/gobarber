@@ -42,12 +42,13 @@ export const AuthProvider: React.FC = ({ children }) => {
       const response = await api.post('/sessions', { email, password });
 
       const { token, user } = response.data;
+
       localStorage.setItem('@GoBarber:token', token);
       localStorage.setItem('@GoBarber:user', JSON.stringify(user));
 
       setData({ token, user });
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }, []);
 
