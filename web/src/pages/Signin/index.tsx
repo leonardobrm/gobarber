@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import * as Yup from 'yup';
 import { Form } from '@unform/web';
@@ -21,9 +21,11 @@ import getValidationErrors from '../../utils/getValidationErrors';
 const Signin: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { signIng } = useAuth();
+  const { signIn } = useAuth();
   const { addToast } = useToast();
   const { type } = usePasswordVisible();
+
+  const history = useHistory();
 
   const handleSubimit = useCallback(
     async data => {
@@ -34,7 +36,8 @@ const Signin: React.FC = () => {
         await validationSubmit.SingIn();
         const { email, password } = data;
 
-        await signIng({ email, password });
+        await signIn({ email, password });
+        history.push('/dashboard');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const error = getValidationErrors(err);
@@ -50,7 +53,7 @@ const Signin: React.FC = () => {
         });
       }
     },
-    [signIng, addToast],
+    [signIn, addToast, history],
   );
 
   return (

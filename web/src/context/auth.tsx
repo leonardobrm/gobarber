@@ -14,7 +14,7 @@ interface SignInCredentials {
 
 interface AuthContextData {
   user: object;
-  signIng(credentials: SignInCredentials): Promise<void>;
+  signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
 }
 
@@ -37,7 +37,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     return {} as AuthState;
   });
 
-  const signIng = useCallback(async ({ email, password }) => {
+  const signIn = useCallback(async ({ email, password }) => {
     try {
       const response = await api.post('/sessions', { email, password });
 
@@ -60,7 +60,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIng, signOut }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
